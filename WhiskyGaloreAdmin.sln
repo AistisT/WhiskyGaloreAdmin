@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiskyGaloreAdmin", "WhiskyGaloreAdmin\WhiskyGaloreAdmin.csproj", "{9794D391-F0B5-4D48-809D-D0DDDC4C1686}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiskyGaloreAdmin", "WhiskyGaloreAdmin\WhiskyGaloreAdmin.csproj", "{CEE973D5-3804-40BF-89DC-F3E48DA3FFFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9794D391-F0B5-4D48-809D-D0DDDC4C1686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9794D391-F0B5-4D48-809D-D0DDDC4C1686}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9794D391-F0B5-4D48-809D-D0DDDC4C1686}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9794D391-F0B5-4D48-809D-D0DDDC4C1686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE973D5-3804-40BF-89DC-F3E48DA3FFFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE973D5-3804-40BF-89DC-F3E48DA3FFFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE973D5-3804-40BF-89DC-F3E48DA3FFFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE973D5-3804-40BF-89DC-F3E48DA3FFFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using WhiskyGaloreAdmin.Models;
 namespace WhiskyGaloreAdmin.Controllers
 {
     public class HomeController : Controller
@@ -22,12 +22,11 @@ namespace WhiskyGaloreAdmin.Controllers
         {
             return View("MorrisCharts");
         }
-
         public ActionResult Tables()
         {
-            return View("Tables");
+            var c= DependencyResolver.Current.GetService<ProductController>();
+            return c.Tables();
         }
-
         public ActionResult Forms()
         {
             return View("Forms");

@@ -22,10 +22,10 @@ namespace WhiskyGaloreAdmin.Controllers
         {
             return View("MorrisCharts");
         }
-        public ActionResult Tables()
+        public ActionResult Whisky()
         {
-            var c= DependencyResolver.Current.GetService<ProductController>();
-            return c.Tables();
+            var c= DependencyResolver.Current.GetService<ManagerController>();
+            return c.Whisky();
         }
         public ActionResult Forms()
         {

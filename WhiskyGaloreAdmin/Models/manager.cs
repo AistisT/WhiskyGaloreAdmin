@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Data;
+﻿using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 
@@ -9,9 +7,9 @@ using MySql.Data.MySqlClient;
 
 namespace WhiskyGaloreAdmin.Models
 {
-    public class Product
+    public class Manager
     {
-        public Product()
+        public Manager(string query)
         {
             this.dt = new DataTable();
             try
@@ -20,7 +18,7 @@ namespace WhiskyGaloreAdmin.Models
                 MySqlConnection con = new MySqlConnection();
                 con.ConnectionString = constr;
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("getProductInfo", con);
+                MySqlCommand cmd = new MySqlCommand(query, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 MySqlDataAdapter sda = new MySqlDataAdapter(cmd);
 

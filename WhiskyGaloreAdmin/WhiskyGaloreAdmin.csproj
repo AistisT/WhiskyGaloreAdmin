@@ -126,13 +126,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NavbarController.cs" />
-    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Domain\Data.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DailyHours.cs" />
     <Compile Include="Models\Navbar.cs" />
-    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -910,7 +911,7 @@
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Home\FlotCharts.cshtml" />
     <Content Include="Views\Home\MorrisCharts.cshtml" />
-    <Content Include="Views\Product\Tables.cshtml" />
+    <Content Include="Views\Manager\Whisky.cshtml" />
     <Content Include="Views\Home\Forms.cshtml" />
     <Content Include="Views\Home\Panels.cshtml" />
     <Content Include="Views\Home\Buttons.cshtml" />
@@ -920,6 +921,9 @@
     <Content Include="Views\Home\Grid.cshtml" />
     <Content Include="Views\Home\Blank.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Manager\Orders.cshtml" />
+    <Content Include="Views\Manager\Finances.cshtml" />
+    <Content Include="Views\Manager\DailyHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,6 +3,8 @@ using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.ComponentModel;
 using System.Data;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace WhiskyGaloreAdmin.Models
 {
@@ -11,7 +13,7 @@ namespace WhiskyGaloreAdmin.Models
         public DailyHours()
         {
             this.currentDate =DateTime.Now.ToString("dd/MM/yyyy");
-            DataTable dt = new DataTable();
+            this.dt = new DataTable();
             try
             {
                 string constr = ConfigurationManager.ConnectionStrings["dbCon"].ConnectionString;
@@ -25,7 +27,16 @@ namespace WhiskyGaloreAdmin.Models
                 sda.Fill(dt);
                 cmd.ExecuteNonQuery();
                 con.Close();
-                EnumerableRowCollection<String> staffNames = from names in dt.AsEnumerable() select names.Field<String>("firstName");
+                EnumerableRowCollection<uint> staffId = from names in dt.AsEnumerable() select names.Field<uint>("staffId");
+                this.staffFullNames = new List<string>();
+                for(int i = 0; i <dt.Rows.Count; i++) { 
+                    staffFullNames.Add(dt.Rows[i]["forename"].ToString()+" "+ dt.Rows[i]["surname"].ToString());
+                }
+                this.staffIds = new List<string>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    staffFullNames.Add(dt.Rows[i]["staffId"].ToString());
+                }
             }
             catch
             {
@@ -43,13 +54,20 @@ namespace WhiskyGaloreAdmin.Models
         [DisplayName("Date")]
         public string currentDate { get; set; }
 
+        public List<string> staffIds { get; set; }
+
+        [DisplayName("Staff ID")]
+        public string staffId { get; set; }
+
         //contact table fields
         [DisplayName("Staff Name*")]
-        public Staff staffname { get; set; }
+        public List<string> staffFullNames { get; set; }
 
-        private String con_str = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString.ToString();
+        public DataTable dt { get; set; }
 
-        public void insertEmployee(DailyHours s)
+        //private String con_str = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString.ToString();
+
+       /* public void insertEmployee(DailyHours s)
         {
             using (MySqlConnection con = new MySqlConnection(con_str))
             {
@@ -108,14 +126,13 @@ namespace WhiskyGaloreAdmin.Models
                     cmd.Parameters.AddWithValue("@role", s.role);
                     cmd.Parameters.AddWithValue("@hourlyRate", s.hourlyRate);
                     cmd.Parameters.AddWithValue("@startDate", Convert.ToDateTime(s.startDate).ToString("yyyy-MM-dd"));
-                    cmd.Parameters.AddWithValue("@ni", s.ni);
-                    cmd.Parameters.AddWithValue("@department", s.department);
+
 
                     cmd.ExecuteNonQuery();
 
                     con.Close();
                 }
             }
-        }
+        }*/
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WhiskyGaloreAdmin.Models
 {
@@ -12,7 +13,7 @@ namespace WhiskyGaloreAdmin.Models
     {
         public DailyHours()
         {
-            this.currentDate =DateTime.Now.ToString("dd/MM/yyyy");
+            this.currentDate = DateTime.Now.ToString("dd/MM/yyyy");
             this.dt = new DataTable();
             try
             {
@@ -27,15 +28,11 @@ namespace WhiskyGaloreAdmin.Models
                 sda.Fill(dt);
                 cmd.ExecuteNonQuery();
                 con.Close();
-                EnumerableRowCollection<uint> staffId = from names in dt.AsEnumerable() select names.Field<uint>("staffId");
-                this.staffFullNames = new List<string>();
-                for(int i = 0; i <dt.Rows.Count; i++) { 
-                    staffFullNames.Add(dt.Rows[i]["forename"].ToString()+" "+ dt.Rows[i]["surname"].ToString());
-                }
-                this.staffIds = new List<string>();
+
+                this.staffFullNames = new SortedDictionary<uint, string>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    staffFullNames.Add(dt.Rows[i]["staffId"].ToString());
+                    staffFullNames.Add(Convert.ToUInt32(dt.Rows[i]["staffId"].ToString()), dt.Rows[i]["forename"].ToString() + " " + dt.Rows[i]["surname"].ToString());
                 }
             }
             catch
@@ -47,92 +44,56 @@ namespace WhiskyGaloreAdmin.Models
 
 
 
-        //username table fields
+
+        [Required(ErrorMessage = "*can not be blank!")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "*only positive numbers")]
         [DisplayName("Hours worked")]
-        public int hours { get; set; }
+        public double hours { get; set; }
 
         [DisplayName("Date")]
         public string currentDate { get; set; }
 
-        public List<string> staffIds { get; set; }
+        public SortedDictionary<uint, string> staffIds { get; set; }
 
+        [Required(ErrorMessage = "*can not be blank!, please select member of staff .")]
         [DisplayName("Staff ID")]
-        public string staffId { get; set; }
+        public int staffId { get; set; }
 
-        //contact table fields
+
         [DisplayName("Staff Name*")]
-        public List<string> staffFullNames { get; set; }
+        public SortedDictionary<uint, string> staffFullNames { get; set; }
 
         public DataTable dt { get; set; }
 
-        //private String con_str = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString.ToString();
 
-       /* public void insertEmployee(DailyHours s)
+        public void InsertDailyhours(DailyHours s)
+        
         {
-            using (MySqlConnection con = new MySqlConnection(con_str))
+            System.Diagnostics.Debug.WriteLine("inside");
+            System.Diagnostics.Debug.WriteLine(s.staffId.GetType());
+            System.Diagnostics.Debug.WriteLine(Convert.ToDateTime(s.currentDate).ToString("yyyy-MM-dd")+" "+ s.hours+ " " + s.staffId);
+            try
             {
+                string constr = ConfigurationManager.ConnectionStrings["dbCon"].ConnectionString;
+                MySqlConnection con = new MySqlConnection();
+                con.ConnectionString = constr;
                 con.Open();
-                using (MySqlCommand cmd = new MySqlCommand("insertNewEmployee", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    //params for insert into username
-                    cmd.Parameters.AddWithValue("@username", s.username);
-                    cmd.Parameters.AddWithValue("@password", s.password);
-                    cmd.Parameters.AddWithValue("@accountType", s.acctype.ToString());
+                MySqlCommand cmd = new MySqlCommand("insertNewDailyHours", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@icurrentDate", Convert.ToDateTime(s.currentDate).ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@ihoursWorked", (double)s.hours);
+                cmd.Parameters.AddWithValue("@iStaff_staffId", s.staffId);                
 
-                    //params for insert into address
-                    cmd.Parameters.AddWithValue("@firstLine", s.firstLine);
-                    if (s.secondLine != null)
-                    {
-                        cmd.Parameters.AddWithValue("@secondLine", s.secondLine);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@secondLine", null);
-                    }
-                    cmd.Parameters.AddWithValue("@town", s.town);
-                    cmd.Parameters.AddWithValue("@postcode", s.postcode);
-                    cmd.Parameters.AddWithValue("@region", s.region);
-                    cmd.Parameters.AddWithValue("@country", s.country);
+                cmd.ExecuteNonQuery();
 
-                    //params for insert into bankDetails
-                    cmd.Parameters.AddWithValue("@sortCode", s.sortCode);
-                    cmd.Parameters.AddWithValue("@accountNumber", s.accountNumber);
-
-                    //params for insert into contact
-                    cmd.Parameters.AddWithValue("@title", s.title.ToString());
-                    cmd.Parameters.AddWithValue("@forename", s.forename);
-                    cmd.Parameters.AddWithValue("@surname", s.surname);
-                    cmd.Parameters.AddWithValue("@firstNumber", s.firstNumber);
-                    if (s.secondaryNumber != null)
-                    {
-                        cmd.Parameters.AddWithValue("@secondaryNumber", s.secondaryNumber);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@secondaryNumber", null);
-                    }
-                    cmd.Parameters.AddWithValue("@email", s.email);
-                    if (s.fax != null)
-                    {
-                        cmd.Parameters.AddWithValue("@fax", s.fax);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@fax", null);
-                    }
-
-                    //params for insert into staff
-                    cmd.Parameters.AddWithValue("@role", s.role);
-                    cmd.Parameters.AddWithValue("@hourlyRate", s.hourlyRate);
-                    cmd.Parameters.AddWithValue("@startDate", Convert.ToDateTime(s.startDate).ToString("yyyy-MM-dd"));
-
-
-                    cmd.ExecuteNonQuery();
-
-                    con.Close();
-                }
+                con.Close();
+                System.Diagnostics.Debug.WriteLine("End !");
             }
-        }*/
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("fail !");
+            }
+
+        }
     }
 }

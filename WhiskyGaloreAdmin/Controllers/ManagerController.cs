@@ -19,12 +19,13 @@ namespace WhiskyGaloreAdmin.Controllers
             return View(new DailyHours());
         }
         [HttpPost]
-        public ActionResult Create(DailyHours u)
+        public ActionResult DailyHours(DailyHours h)
         {
-           // u.insertEmployee(u);
-
-            return View();
+            h.InsertDailyhours(h);
+            System.Diagnostics.Debug.WriteLine("returning !");
+            return View(new DailyHours());
         }
+
     }
 
 }

@@ -88,6 +88,7 @@ namespace WhiskyGaloreAdmin.Models
 
                 con.Close();
                 System.Diagnostics.Debug.WriteLine("End !");
+                dt.Clear();
             }
             catch
             {

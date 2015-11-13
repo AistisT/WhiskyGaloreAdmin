@@ -924,6 +924,7 @@
     <Content Include="Views\Manager\Orders.cshtml" />
     <Content Include="Views\Manager\Finances.cshtml" />
     <Content Include="Views\Manager\DailyHours.cshtml" />
+    <Content Include="Views\Manager\DailyHoursUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

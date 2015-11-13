@@ -13,6 +13,11 @@ namespace WhiskyGaloreAdmin.Models
     {
         public DailyHours()
         {
+
+
+        }
+        public void getNames()
+        {
             this.currentDate = DateTime.Now.ToString("dd/MM/yyyy");
             this.dt = new DataTable();
             try
@@ -21,10 +26,10 @@ namespace WhiskyGaloreAdmin.Models
                 MySqlConnection con = new MySqlConnection();
                 con.ConnectionString = constr;
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("getStaffIdName", con);
+                MySqlCommand cmd = new MySqlCommand("getStaffIdNameWithoutDailyHours", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 MySqlDataAdapter sda = new MySqlDataAdapter(cmd);
-
+                cmd.Parameters.AddWithValue("@currentDate", Convert.ToDateTime(currentDate).ToString("yyyy-MM-dd"));
                 sda.Fill(dt);
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -39,7 +44,36 @@ namespace WhiskyGaloreAdmin.Models
             {
                 System.Diagnostics.Debug.WriteLine("fail !");
             }
+        }
 
+        public void getData()
+        {
+            this.currentDate = DateTime.Now.ToString("dd/MM/yyyy");
+            this.dt = new DataTable();
+            try
+            {
+                string constr = ConfigurationManager.ConnectionStrings["dbCon"].ConnectionString;
+                MySqlConnection con = new MySqlConnection();
+                con.ConnectionString = constr;
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand("getStaffDataWithDailyHours", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                MySqlDataAdapter sda = new MySqlDataAdapter(cmd);
+                cmd.Parameters.AddWithValue("@currentDate", Convert.ToDateTime(currentDate).ToString("yyyy-MM-dd"));
+                sda.Fill(dt);
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+                this.staffFullNames = new SortedDictionary<uint, string>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    staffFullNames.Add(Convert.ToUInt32(dt.Rows[i]["staffId"].ToString()), dt.Rows[i]["forename"].ToString() + " " + dt.Rows[i]["surname"].ToString());
+                }
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("fail !");
+            }
         }
 
 
@@ -55,11 +89,11 @@ namespace WhiskyGaloreAdmin.Models
 
         public SortedDictionary<uint, string> staffIds { get; set; }
 
-        [Required(ErrorMessage = "*can not be blank!, please select member of staff .")]
+
         [DisplayName("Staff ID")]
         public int staffId { get; set; }
 
-
+        [Required(ErrorMessage = "*can not be blank!, please select member of staff .")]
         [DisplayName("Staff Name*")]
         public SortedDictionary<uint, string> staffFullNames { get; set; }
 
@@ -67,11 +101,11 @@ namespace WhiskyGaloreAdmin.Models
 
 
         public void InsertDailyhours(DailyHours s)
-        
         {
+            this.currentDate = DateTime.Now.ToString("dd/MM/yyyy");
             System.Diagnostics.Debug.WriteLine("inside");
             System.Diagnostics.Debug.WriteLine(s.staffId.GetType());
-            System.Diagnostics.Debug.WriteLine(Convert.ToDateTime(s.currentDate).ToString("yyyy-MM-dd")+" "+ s.hours+ " " + s.staffId);
+            System.Diagnostics.Debug.WriteLine(Convert.ToDateTime(s.currentDate).ToString("yyyy-MM-dd") + " " + s.hours + " " + s.staffId);
             try
             {
                 string constr = ConfigurationManager.ConnectionStrings["dbCon"].ConnectionString;
@@ -82,13 +116,12 @@ namespace WhiskyGaloreAdmin.Models
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@icurrentDate", Convert.ToDateTime(s.currentDate).ToString("yyyy-MM-dd"));
                 cmd.Parameters.AddWithValue("@ihoursWorked", (double)s.hours);
-                cmd.Parameters.AddWithValue("@iStaff_staffId", s.staffId);                
+                cmd.Parameters.AddWithValue("@iStaff_staffId", s.staffId);
 
                 cmd.ExecuteNonQuery();
 
                 con.Close();
                 System.Diagnostics.Debug.WriteLine("End !");
-                dt.Clear();
             }
             catch
             {

@@ -11,7 +11,7 @@
     <!-- /.col-lg-12 -->
 </div>
 
-@using (Html.BeginForm("DailyHours", "Manager", FormMethod.Post))
+@using (Html.BeginForm("DailyHoursUpdate", "Manager", FormMethod.Post))
 {
     <!-- /.row -->
     <div class="row">
@@ -24,34 +24,37 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                    @Html.LabelFor(model => model.staffFullNames, new { @class = "control-label col-lg-3" })
-                                    @Html.DropDownListFor(model => model.staffFullNames, new SelectList(Model.staffFullNames, "Key", "Value"), " ", new { @class = "dropdown", id = "DropDownList" })
-                                    @Html.ValidationMessageFor(model => model.staffFullNames, String.Empty, new { @style = "color:red;!important" })
-                                </div>
+                                @Html.LabelFor(model => model.staffFullNames, new { @class = "control-label col-lg-3" })
+                                @Html.DropDownListFor(model => model.staffFullNames, new SelectList(Model.staffFullNames, "Key", "Value"), " ", new { @class = "dropdown", id = "DropDownList" })
+                                @Html.ValidationMessageFor(model => model.staffFullNames, String.Empty, new { @style = "color:red;!important" })
+                            </div>
                             <script type="text/javascript">
                                 $(function () {
                                     $('#DropDownList').change(function () {
                                         $('#staffId').val(this.value);
+
+                                        $('#hoursWorked').val(Model.dt.Select(document.getElementById('staffId').value).Rows[i]["hoursworked"].ToString());
                                     });
-                                });                             
+                                });
                             </script>
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.staffId, new { @class = "control-label col-lg-3" })
-                                @Html.EditorFor(model => model.hours, new { @class = "form-control col-lg-9" }) 
-                               
+                                @Html.EditorFor(model => model.staffId, new { @class = "form-control col-lg-9" })
+
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.currentDate , new { @class = "control-label col-lg-3" })
-                                <input value="@(Model.currentDate)" readonly="readonly" />  
+                                @Html.LabelFor(model => model.currentDate, new { @class = "control-label col-lg-3" })
+                                @Html.EditorFor(model => model.hours, new { @class = "form-control col-lg-9" })
+                                
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.hours, new { @class = "control-label col-lg-3" })
                                 @Html.EditorFor(model => model.hours, new { @class = "form-control col-lg-9" })
-                                @Html.ValidationMessageFor(model => model.hours, String.Empty, new { @style = "color:red;!important"})
-                                
+                                @Html.ValidationMessageFor(model => model.hours, String.Empty, new { @style = "color:red;!important", id = "hoursWorked" })
+
                             </div>
                         </div>
                         <div class="col-lg-6">

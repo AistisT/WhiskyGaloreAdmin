@@ -11,7 +11,7 @@
     <!-- /.col-lg-12 -->
 </div>
 
-@using (Html.BeginForm("DailyHoursUpdate", "Manager", FormMethod.Post))
+@using (Html.BeginForm("DailyHours", "Manager", FormMethod.Post))
 {
     <!-- /.row -->
     <div class="row">
@@ -33,7 +33,6 @@
                                     $('#DropDownList').change(function () {
                                         $('#staffId').val(this.value);
 
-                                        $('#hoursWorked').val(Model.dt.Select(document.getElementById('staffId').value).Rows[i]["hoursworked"].ToString());
                                     });
                                 });
                             </script>

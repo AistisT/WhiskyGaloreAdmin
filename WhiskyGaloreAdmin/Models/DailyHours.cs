@@ -46,7 +46,7 @@ namespace WhiskyGaloreAdmin.Models
             }
         }
 
-        public void getData()
+        public void getData(int staffId)
         {
             this.currentDate = DateTime.Now.ToString("dd/MM/yyyy");
             this.dt = new DataTable();
@@ -56,19 +56,14 @@ namespace WhiskyGaloreAdmin.Models
                 MySqlConnection con = new MySqlConnection();
                 con.ConnectionString = constr;
                 con.Open();
-                MySqlCommand cmd = new MySqlCommand("getStaffDataWithDailyHours", con);
+                MySqlCommand cmd = new MySqlCommand("getSingleStaffHours", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 MySqlDataAdapter sda = new MySqlDataAdapter(cmd);
+                cmd.Parameters.AddWithValue("@staffid", staffId);
                 cmd.Parameters.AddWithValue("@currentDate", Convert.ToDateTime(currentDate).ToString("yyyy-MM-dd"));
                 sda.Fill(dt);
                 cmd.ExecuteNonQuery();
                 con.Close();
-
-                this.staffFullNames = new SortedDictionary<uint, string>();
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    staffFullNames.Add(Convert.ToUInt32(dt.Rows[i]["staffId"].ToString()), dt.Rows[i]["forename"].ToString() + " " + dt.Rows[i]["surname"].ToString());
-                }
             }
             catch
             {

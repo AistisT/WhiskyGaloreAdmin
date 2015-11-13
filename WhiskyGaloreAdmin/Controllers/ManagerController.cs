@@ -14,12 +14,27 @@ namespace WhiskyGaloreAdmin.Controllers
         {
             return View(new Manager("getProductInfo"));
         }
+        public ActionResult Staff()
+        {
+            return View(new Manager("getStaffDataWithDailyHours"));
+        }
         public ActionResult DailyHours()
         {
             DailyHours d = new DailyHours();
             d.getNames();
             return View(d);
         }
+
+        public ActionResult DailyHoursUpdate(int staffId)
+        {
+            ModelState.Clear();
+            DailyHours d = new DailyHours();
+            d.getData(staffId);
+            return View(d);
+        }
+
+
+
         [HttpPost]
         public ActionResult DailyHours(DailyHours h)
         {
